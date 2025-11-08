@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时光情书 · 专属我们的浪漫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        love: {
+                            pink: '#ff6b8b',
+                            purple: '#9c27b0',
+                            blue: '#4a6cf7',
+                            dark: '#0f0a28'
+                        },
+                    },
+                    fontFamily: {
+                        romantic: ['"Montserrat"', 'Roboto', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 15px rgba(255, 107, 139, 0.7);
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+            }
+            .card-hover {
+                transition: all 0.4s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px) scale(1.01);
+                box-shadow: 0 20px 25px -5px rgba(156, 39, 176, 0.2);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0a28 0%, #2a1066 100%);
+            overflow-x: hidden;
+        }
+
+        .custom-file-upload {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .custom-file-upload:hover {
+            background-color: rgba(255, 107, 139, 0.2);
+        }
+
+        .media-item {
+            position: relative;
+            overflow: hidden;
+        }
+        .media-item .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .media-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .media-caption {
+            width: 100%;
+            background: rgba(15, 10, 40, 0.8);
+            padding: 4px 8px;
+            border: none;
+            color: #e5e7eb;
+            font-size: 14px;
+            border-radius: 4px;
+            outline: none;
+        }
+        .media-caption:focus {
+            border: 1px solid #ff6b8b;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-romantic text-white min-h-screen">
+    <!-- 动态背景 -->
+    <div class="fixed inset-0 z-0 opacity-30">
+        <div id="stars" class="absolute inset-0"></div>
+        <div id="hearts" class="absolute inset-0 pointer-events-none"></div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-love-dark/60 bg-blur border-b border-white/10 py-3 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-love-pink flex items-center">
+                <<i class="fa fa-heart mr-2 animate-pulse"></</i>
+                <span>时光情书</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <button id="edit-btn" class="bg-love-pink/20 hover:bg-love-pink/30 text-love-pink font-medium py-2 px-4 rounded-full transition-all text-sm md:text-base">
+                    <<i class="fa fa-pencil mr-1"></</i> 编辑内容
+                </button>
+                <button id="share-btn" class="bg-love-blue/20 hover:bg-love-blue/30 text-love-blue font-medium py-2 px-4 rounded-full transition-all text-sm md:text-base">
+                    <<i class="fa fa-share-alt mr-1"></</i> 分享链接
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页横幅 -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="container mx-auto px-4 z-10 text-center">
+            <h1 id="main-title" class="text-[clamp(2.2rem,7vw,4rem)] font-bold mb-6 text-glow leading-tight float">
+                我爱你，不止今天
+            </h1>
+            <p id="main-desc" class="text-[clamp(1rem,3vw,1.25rem)] text-gray-200 mb-10 max-w-2xl mx-auto">
+                这是专属于我们的浪漫空间，记录每一份心动与回忆
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#memories" class="bg-love-pink hover:bg-love-pink/90 text-white font-medium py-3 px-8 rounded-full transition-all shadow-lg shadow-love-pink/30">
+                    查看回忆
+                </a>
+                <a href="#confession" class="bg-transparent border-2 border-love-pink text-love-pink hover:bg-love-pink/10 font-medium py-3 px-8 rounded-full transition-all">
+                    写下心声
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+            <a href="#confession" class="text-love-pink text-3xl">
+                <<i class="fa fa-angle-down"></</i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 告白心声 -->
+    <section id="confession" class="py-20 relative z-10">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold mb-4 text-love-pink">
+                    告白心声
+                </h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    把想对TA说的话，藏在这里
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white/5 bg-blur rounded-2xl p-8 shadow-xl border border-white/10 mb-10">
+                <div id="confession-content" class="text-gray-100 space-y-4 text-lg">
+                    <p>亲爱的：</p>
+                    <p>遇见你是我这辈子最幸运的事，你的笑容像阳光，温暖了我所有的日子。和你在一起的每一分每一秒，都充满了甜蜜与安心。</p>
+                    <p>往后余生，愿我们携手同行，一起看遍山川湖海，一起经历人间烟火，我爱你，直到永远。</p>
+                    <p class="text-right text-love-pink">爱你的人 ❤️</p>
+                </div>
+
+                <!-- 编辑模式：告白输入框 -->
+                <div id="confession-editor" class="hidden mt-6">
+                    <textarea id="confession-text" rows="8" class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-love-pink" placeholder="写下你想对TA说的话...">亲爱的：
+遇见你是我这辈子最幸运的事，你的笑容像阳光，温暖了我所有的日子。和你在一起的每一分每一秒，都充满了甜蜜与安心。
+往后余生，愿我们携手同行，一起看遍山川湖海，一起经历人间烟火，我爱你，直到永远。
+爱你的人 ❤️</textarea>
+                    <div class="text-right mt-4">
+                        <button id="save-confession" class="bg-love-pink hover:bg-love-pink/90 text-white font-medium py-2 px-6 rounded-full transition-all">
+                            保存内容
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 回忆相册（支持添加照片/视频） -->
+    <section id="memories" class="py-20 relative z-10 bg-love-dark/30">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold mb-4 text-love-pink">
+                    回忆珍藏
+                </h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    上传照片、视频，定格每一个美好瞬间
+                </p>
+            </div>
+
+            <!-- 媒体上传区 -->
+            <div id="upload-area" class="max-w-3xl mx-auto mb-12 bg-white/5 bg-blur rounded-2xl p-6 shadow-xl border border-white/10 hidden">
+                <h3 class="text-xl font-semibold mb-4 text-center">添加回忆</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 照片上传 -->
+                    <label class="custom-file-upload border-2 border-dashed border-white/30 rounded-xl p-8 text-center">
+                        <input type="file" id="photo-upload" accept="image/*" class="hidden">
+                        <<i class="fa fa-image text-4xl text-love-pink mb-3"></</i>
+                        <p class="text-gray-300">点击上传照片</p>
+                    </label>
+                    <!-- 视频上传 -->
+                    <label class="custom-file-upload border-2 border-dashed border-white/30 rounded-xl p-8 text-center">
+                        <input type="file" id="video-upload" accept="video/*" class="hidden">
+                        <<i class="fa fa-video-camera text-4xl text-love-blue mb-3"></</i>
+                        <p class="text-gray-300">点击上传视频</p>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 媒体展示区 -->
+            <div id="media-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- 示例照片1 -->
+                <div class="media-item rounded-xl overflow-hidden shadow-lg card-hover">
+                    <img src="https://picsum.photos/id/1005/800/600" alt="回忆照片" class="w-full h-64 object-cover">
+                    <div class="delete-btn"><<i class="fa fa-times"></</i></div>
+                    <div class="p-4 bg-love-dark/70">
+                        <input type="text" class="media-caption" value="第一次相遇" placeholder="添加描述...">
+                    </div>
+                </div>
+                <!-- 示例照片2 -->
+                <div class="media-item rounded-xl overflow-hidden shadow-lg card-hover">
+                    <img src="https://picsum.photos/id/1039/800/600" alt="回忆照片" class="w-full h-64 object-cover">
+                    <div class="delete-btn"><<i class="fa fa-times"></</i></div>
+                    <div class="p-4 bg-love-dark/70">
+                        <input type="text" class="media-caption" value="一起看海" placeholder="添加描述...">
+                    </div>
+                </div>
+                <!-- 示例视频 -->
+                <div class="media-item rounded-xl overflow-hidden shadow-lg card-hover">
+                    <video class="w-full h-64 object-cover" controls>
+                        <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+                    <div class="delete-btn"><<i class="fa fa-times"></</i></div>
+                    <div class="p-4 bg-love-dark/70">
+                        <input type="text" class="media-caption" value="生日惊喜" placeholder="添加描述...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部信息 -->
+    <footer class="py-8 bg-love-dark/80 border-t border-white/10 relative z-10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 时光情书 · 专属我们的浪漫</p>
+            <p class="text-gray-500 text-sm mt-2">把这份爱，藏在时光里</p>
+        </div>
+    </footer>
+
+    <!-- 分享弹窗 -->
+    <div id="share-modal" class="fixed inset-0 bg-black/70 bg-blur flex items-center justify-center z-50 hidden">
+        <div class="bg-love-dark rounded-2xl p-8 max-w-md w-full mx-4 border border-white/10">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-love-pink">分享浪漫链接</h3>
+                <button id="close-share" class="text-gray-400 hover:text-white text-xl">
+                    <<i class="fa fa-times"></</i>
+                </button>
+            </div>
+            <div class="mb-6">
+                <input type="text" id="link-input" value="" class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white" readonly>
+            </div>
+            <div class="flex gap-4 justify-center">
+                <button id="copy-link" class="flex-1 bg-love-pink hover:bg-love-pink/90 text-white font-medium py-2 px-4 rounded-lg transition-all">
+                    <<i class="fa fa-copy mr-2"></</i> 复制链接
+                </button>
+                <button id="send-wechat" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-all">
+                    <<i class="fa fa-wechat mr-2"></</i> 微信分享
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createHearts();
+            initEditMode();
+            initMediaUpload();
+            initShareModal();
+            initDeleteMedia();
+            setShareLink();
+        });
+
+        // 2. 动态生成星星背景
+        function createStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 3 + 1;
+                star
